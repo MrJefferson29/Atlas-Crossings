@@ -41,7 +41,7 @@ const Home = () => {
     const getStories = async () => {
       setLoading(true);
       try {
-        let url = `https://global-logistics-isu8.onrender.com/story/getAllStories?page=${page}`;
+        let url = `https://atlas-crossings.onrender.com/story/getAllStories?page=${page}`;
         if (searchKey) {
           url += `&search=${searchKey}`;
         }

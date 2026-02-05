@@ -107,7 +107,7 @@ const EditPackageModal = ({ story, isOpen, onClose, onSuccess }) => {
 
     try {
       const { data } = await axios.put(
-        `https://global-logistics-isu8.onrender.com/story/${story.slug}/edit`,
+        `https://atlas-crossings.onrender.com/story/${story.slug}/edit`,
         formData,
         config
       );

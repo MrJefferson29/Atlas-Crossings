@@ -24,7 +24,7 @@ const RegisterScreen = () => {
 
     try {
       const { data } = await axios.post(
-        "https://global-logistics-isu8.onrender.com/auth/register",
+        "https://atlas-crossings.onrender.com/auth/register",
         {
           username,
           email,
