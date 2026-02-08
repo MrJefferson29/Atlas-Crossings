@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Row, Col } from "react-bootstrap";
+import TestimonialSlider from "./Testimonials";
 import j1 from '../../Assets/burn.jpg';
 import exel1 from '../../Assets/exel1.jpg'
 import exel2 from '../../Assets/exel2.jpg'
@@ -19,7 +20,7 @@ export default function Sc1() {
           <SubHeading>
             Your Trusted Partner in Transport Logistics
           </SubHeading>
-          <RequestButton href="#contact">REQUEST QUOTE</RequestButton>
+          <RequestButton href="/tracking">REQUEST QUOTE</RequestButton>
         </HeroContent>
       </HeroSection>
       
@@ -101,6 +102,8 @@ export default function Sc1() {
           alt="Fleet of delivery vans" 
         />
       </GallerySection>
+
+      <TestimonialSlider />
     </Styles>
   );
 }
