@@ -17,6 +17,8 @@ function Footer() {
                 manages its warehouse on-hand inventory to ensure efficiency,
                 accuracy, and seamless operations, providing both package and
                 pet delivery services to enhance customer satisfaction.
+                <br />
+                <b><strong>Dallas, Texas</strong></b>
               </FooterDescription>
             </FooterSection>
           </Col>
@@ -47,7 +49,7 @@ function Footer() {
                 </SocialIcon>
               </SocialIcons>
               <br />
-              <p><b>469-656-8710</b></p>
+              <p><b>+1 214-705-3655</b></p>
             </FooterSection>
           </Col>
         </Row>
