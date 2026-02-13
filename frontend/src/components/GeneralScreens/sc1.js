@@ -12,6 +12,41 @@ import gal4 from '../../Assets/gal4.jpg'
 import mbi from '../../Assets/mbis.jpg'
 
 export default function Sc1() {
+  const [showQuoteModal, setShowQuoteModal] = React.useState(false);
+  const [fromLocation, setFromLocation] = React.useState("");
+  const [toLocation, setToLocation] = React.useState("");
+  const [quoteError, setQuoteError] = React.useState("");
+
+  const handleOpenQuote = () => {
+    setQuoteError("");
+    setShowQuoteModal(true);
+  };
+
+  const handleCloseQuote = () => {
+    setShowQuoteModal(false);
+  };
+
+  const handleSubmitQuote = (event) => {
+    event.preventDefault();
+
+    const from = fromLocation.trim();
+    const to = toLocation.trim();
+
+    if (!from || !to) {
+      setQuoteError("Please fill in both locations.");
+      return;
+    }
+
+    const subject = encodeURIComponent("New quote request - Atlas Crossings");
+    const body = encodeURIComponent(
+      `A user requested a new logistics quote.\n\nFrom (origin): ${from}\nTo (destination): ${to}\n\nPlease follow up with pricing and options.`
+    );
+
+    window.location.href = `mailto:atlascrossings@gmail.com?subject=${subject}&body=${body}`;
+
+    setShowQuoteModal(false);
+  };
+
   return (
     <Styles>
       <HeroSection>
@@ -20,7 +55,9 @@ export default function Sc1() {
           <SubHeading>
             Your Trusted Partner in Transport Logistics
           </SubHeading>
-          <RequestButton href="/tracking">REQUEST QUOTE</RequestButton>
+          <RequestButton type="button" onClick={handleOpenQuote}>
+            REQUEST QUOTE
+          </RequestButton>
         </HeroContent>
       </HeroSection>
       
@@ -104,6 +141,54 @@ export default function Sc1() {
       </GallerySection>
 
       <TestimonialSlider />
+
+      {showQuoteModal && (
+        <QuoteModalOverlay
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              handleCloseQuote();
+            }
+          }}
+        >
+          <QuoteModal>
+            <ModalTitle>Request a Quote</ModalTitle>
+            <ModalDescription>
+              Tell us where your shipment is coming from and where it needs to go. Our team will contact you with a tailored logistics quote.
+            </ModalDescription>
+            {quoteError && <ModalError>{quoteError}</ModalError>}
+            <ModalForm onSubmit={handleSubmitQuote}>
+              <ModalField>
+                <ModalLabel htmlFor="fromLocation">Origin location</ModalLabel>
+                <ModalInput
+                  id="fromLocation"
+                  type="text"
+                  placeholder="e.g. Hamburg, Germany"
+                  value={fromLocation}
+                  onChange={(e) => setFromLocation(e.target.value)}
+                />
+              </ModalField>
+              <ModalField>
+                <ModalLabel htmlFor="toLocation">Destination location</ModalLabel>
+                <ModalInput
+                  id="toLocation"
+                  type="text"
+                  placeholder="e.g. Lagos, Nigeria"
+                  value={toLocation}
+                  onChange={(e) => setToLocation(e.target.value)}
+                />
+              </ModalField>
+              <ModalActions>
+                <ModalSecondary type="button" onClick={handleCloseQuote}>
+                  Cancel
+                </ModalSecondary>
+                <ModalPrimary type="submit">
+                  Send request
+                </ModalPrimary>
+              </ModalActions>
+            </ModalForm>
+          </QuoteModal>
+        </QuoteModalOverlay>
+      )}
     </Styles>
   );
 }
@@ -223,7 +308,7 @@ const SubHeading = styled.h2`
 `;
 
 // Request Quote Button
-const RequestButton = styled.a`
+const RequestButton = styled.button`
   display: inline-block;
   background: linear-gradient(135deg, ${theme.lightGreen} 0%, ${theme.lightGreenHover} 100%);
   color: ${theme.textLight};
@@ -231,13 +316,14 @@ const RequestButton = styled.a`
   border-radius: 50px;
   font-weight: 700;
   font-size: 1rem;
-  text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 1px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   margin-top: 1rem;
   box-shadow: ${theme.shadowMedium};
   border: 2px solid transparent;
+  cursor: pointer;
+  outline: none;
 
   &:hover {
     background: linear-gradient(135deg, ${theme.lightGreenHover} 0%, ${theme.lightGreen} 100%);
@@ -641,4 +727,124 @@ const GalleryImage = styled.img`
     height: 320px;
     border-radius: 16px;
   }
+`;
+
+// Request Quote Modal
+const QuoteModalOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1050;
+`;
+
+const QuoteModal = styled.div`
+  background-color: ${theme.white};
+  border-radius: 16px;
+  max-width: 480px;
+  width: 100%;
+  padding: 24px 24px 28px;
+  box-shadow: ${theme.shadowLarge};
+`;
+
+const ModalTitle = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: ${theme.textDark};
+  margin-bottom: 8px;
+`;
+
+const ModalDescription = styled.p`
+  font-size: 0.98rem;
+  color: ${theme.textGray};
+  margin-bottom: 18px;
+  line-height: 1.6;
+`;
+
+const ModalForm = styled.form`
+  margin-top: 4px;
+`;
+
+const ModalField = styled.div`
+  margin-bottom: 14px;
+`;
+
+const ModalLabel = styled.label`
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: ${theme.textDark};
+  margin-bottom: 4px;
+`;
+
+const ModalInput = styled.input`
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(27, 77, 62, 0.25);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus {
+    border-color: ${theme.lightGreen};
+    box-shadow: 0 0 0 3px rgba(124, 179, 66, 0.25);
+  }
+`;
+
+const ModalActions = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+`;
+
+const ModalPrimary = styled.button`
+  background: linear-gradient(135deg, ${theme.lightGreen} 0%, ${theme.lightGreenHover} 100%);
+  color: ${theme.textLight};
+  border-radius: 999px;
+  border: none;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: ${theme.shadowMedium};
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: ${theme.shadowLarge};
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;
+
+const ModalSecondary = styled.button`
+  background: transparent;
+  color: ${theme.textDark};
+  border-radius: 999px;
+  border: 1px solid rgba(27, 77, 62, 0.2);
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    background-color: rgba(27, 77, 62, 0.05);
+    border-color: rgba(27, 77, 62, 0.4);
+  }
+`;
+
+const ModalError = styled.p`
+  color: #c0392b;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
 `;
