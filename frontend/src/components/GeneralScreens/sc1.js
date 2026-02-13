@@ -172,7 +172,7 @@ export default function Sc1() {
                 <ModalInput
                   id="toLocation"
                   type="text"
-                  placeholder="e.g. Lagos, Nigeria"
+                  placeholder="e.g. Texas, USA"
                   value={toLocation}
                   onChange={(e) => setToLocation(e.target.value)}
                 />
